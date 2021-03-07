@@ -1,2 +1,8 @@
-ds:input [12]
-dsfsdf:click [dfdfs]
+navigate [network-service/vip/create]
+name:input [input]
+desc:input [textarea]
+l3Type:select [0]
+l3:select [0]
+iprange:select [0]
+specificIp:input [192.168.0.1]
+submit:click

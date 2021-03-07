@@ -1,0 +1,5 @@
+{
+  "lib": ["playwright"],
+  "kernal": ["chromium"],
+  "plugins": ["./scripts/zstackuitest.plugin"]
+}
