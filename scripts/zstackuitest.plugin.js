@@ -59,7 +59,7 @@ function transformPlaywright(directives, options) {
         {
           const name = `.${selector}${suffixClassName}`
           const t = `
-          await page.fill('${name} input', "${param}");
+          await page.fill('${name} input,${name} textarea', "${param}");
 `
           sts.push(t)
           break
@@ -94,6 +94,16 @@ function transformPlaywright(directives, options) {
           sts.push(t)
           break
         }
+
+      case 'wait':
+        {
+          const name = `.${selector}${suffixClassName}`
+          const t = `
+          await page.waitForTimeout(${param});
+      `
+          sts.push(t)
+          break
+        }
       // case 'click':
       //   {
       //     const name = `.${selector}${suffixClassName}`
@@ -113,14 +123,14 @@ function transformPlaywright(directives, options) {
     );
     const page = await browser.newPage();
    ${sts.join('')}
-    await browser.close();
+  //  await browser.close();
   })();`
 
 
   return res
 }
 function parse(statement) {
-  const keys = /(navigate|input|select|click|list-select|textarea|submit)\s*/
+  const keys = /(navigate|input|select|click|list-select|textarea|submit|wait)\s*/
   const selector = /\w+(?=:)/
   const params = /\[([\.\d\w\/-]+)\]/
 

@@ -1,3 +1,8 @@
+navigate [login]
+username:input [admin]
+password:input [password]
+submit
+wait [2000]
 navigate [network-service/vip/create]
 name:input [input]
 description:input [textarea]
