@@ -1,6 +1,6 @@
-function transformFile(code, options, filename) {
+import path from 'path'
 
-  console.log('options', options)
+function transformFile(code, options, filename) {
 
 
   const source = code.toString().split('\n')
@@ -9,104 +9,115 @@ function transformFile(code, options, filename) {
   for (let i = 0; i < source.length; i++) {
     const dir = parse(source[i])
 
-    console.log(dir)
-
     directives.push(dir)
   }
 
-  const t = transform(directives, options)
-  genCode(t, options)
+  return transform(directives, options)
 }
 
-function genCode(libCodes, options) {
 
-  console.log('libCodes', libCodes)
-}
 function transform(directives, options) {
-  const { lib } = options
+  const { libs = [] } = options
+  const trfs = {}
 
-  switch (lib) {
-    case 'playwright':
+  for (const lib of libs) {
 
-      return transformPlaywright(directives, options)
+    switch (lib) {
+      case 'playwright':
+
+        const res = transformPlaywright(directives, options)
+        trfs[lib] = res
+        break;
+    }
   }
+
+
+  return trfs
+
 }
 
 
 function transformPlaywright(directives, options) {
-  const { kernals, baseUrl = 'http://127.0.0.1:7000/' } = options
+  const { kernals, baseUrl = 'http://127.0.0.1:7000' } = options
 
   const suffixClassName = '-uitest'
 
-  const ps = {}
-  for (k of kernals) {
+  const sts = []
+  for (const { key, param, selector } of directives) {
 
-    const sts = []
-    for ({ key, param, selector } of directives) {
+    switch (key) {
+      case 'navigate':
+        {
+          const t = `
+          await page.goto('${baseUrl}/${param}');
+          `
+          sts.push(t)
+          break
+        }
 
-      switch (key) {
-        case 'navigate':
-          {
-            const t = `
-            await page.goto('${baseUrl}/${param}');
-            `
-            sts.push(t)
-            break
-          }
-
-        case 'input':
-          {
-            const name = `.${selector}${suffixClassName}`
-            const t = `
-            await page.fill('${name}', ${param});
+      case 'input':
+        {
+          const name = `.${selector}${suffixClassName}`
+          const t = `
+          await page.fill('${name} input', "${param}");
+`
+          sts.push(t)
+          break
+        }
+      case 'select':
+        {
+          const name = `.${selector}${suffixClassName}`
+          const t = `
+            await page.click('${name} .zstack-select');
+            await page.click('${name} .ant-select-item:nth-child(${parseInt(param) + 1})');
   `
-            sts.push(t)
-            break
-          }
-        case 'select':
-          {
-            const name = `.${selector}${suffixClassName}`
-            const t = `
-              await page.click('.${name} .zstack-select');
-              await page.click('.${name} .ant-select-item:nth-child(${parseInt(param) + 1})');
+          sts.push(t)
+          break
+        }
+      case 'list-select':
+        {
+          const name = `.${selector}${suffixClassName}`
+          const t = `
+            await page.click('${name} button');
+            await page.click('.ant-drawer-open .ant-radio');
+            await page.click('.ant-drawer-open .ant-drawer-footer button:nth-child(1)');
+  `
+          sts.push(t)
+          break
+        }
+      case 'submit':
+        {
+          const name = `.${selector}${suffixClassName}`
+          const t = `
+              await page.click('.submit-uitest');
     `
-            sts.push(t)
-            break
-          }
-        case 'list-select':
-          {
-            const name = `.${selector}${suffixClassName}`
-            const t = `
-              await page.click('.${name} button');
-              await page.click('.ant-drawer-open .ant-radio');
-              await page.click('.ant-drawer-open .ant-drawer-footer button:nth-child(1)');
-    `
-            sts.push(t)
-            break
-          }
-        case 'submit':
-          {
-            const name = `.${selector}${suffixClassName}`
-            const t = `
-                await page.click('.submit-uitest');
-      `
-            sts.push(t)
-            break
-          }
-      }
+          sts.push(t)
+          break
+        }
+      // case 'click':
+      //   {
+      //     const name = `.${selector}${suffixClassName}`
+      //     const t = `
+      //           await page.click('button.${selector}');
+      // `
+      //     sts.push(t)
+      //     break
+      //   }
     }
-    const res = ` 
-    const { ${k} } = require('playwright');
-    (async () => {
-      const browser = await ${k}.launch();
-     ${sts.join('\n')}
-      await browser.close();
-    })();`
-
-    ps[k] = res
   }
+  const res = ` 
+  const { ${kernals.join(',')} } = require('playwright');
+  (async () => {
+    const browser = await ${kernals[0]}.launch(
+      { headless: false, slowMo: 50 }
+    );
+    const page = await browser.newPage();
+   ${sts.join('')}
+    await browser.close();
+  })();`
 
-  return ps
+
+  return res
 }
 function parse(statement) {
   const keys = /(navigate|input|select|click|list-select|textarea|submit)\s*/

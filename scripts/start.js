@@ -32,11 +32,13 @@ commander.option(
 commander.option(
   "-l, --libs [list]",
   "libs",
+  collect
 );
 
 commander.option(
   "-k, --kernals [list]",
   "kernals",
+  collect
 );
 
 

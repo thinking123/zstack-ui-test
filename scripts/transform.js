@@ -1,11 +1,10 @@
 
 import fs from "fs"
-import { readdir, compile } from './utils'
+import { readdir, compile, writeFile } from './utils'
 import path from "path";
 
 export const transform = async (options) => {
 
-  console.log('options', options)
 
   const {
     filenames = [],
@@ -31,7 +30,9 @@ export const transform = async (options) => {
 }
 
 async function handle(filenameOrDir, options) {
-  if (!fs.existsSync(filenameOrDir)) return 0;
+  if (!fs.existsSync(filenameOrDir)) {
+    return 0
+  };
 
   const stat = fs.statSync(filenameOrDir);
 
@@ -46,7 +47,6 @@ async function handle(filenameOrDir, options) {
 
       const written = await handleFile(src, dirname, options);
       if (written) count += 1;
-      console.log('src:', src)
     }
 
     return count;
@@ -66,6 +66,30 @@ async function handleFile(src, base, options) {
   const written = await write(src, base, options);
 }
 
-async function write(src, base, opts) {
-  const res = await compile(src, opts)
+async function write(filename, base, opts) {
+  const { libs = [], kernals, extname = 'test.js', outdir = './dist' } = opts
+
+  const libCodes = await compile(filename, opts)
+
+
+  const baseName = path.basename(filename, path.extname(filename))
+  const dirname = path.join(
+    outdir,
+  )
+
+  if (!fs.existsSync(dirname)) {
+    fs.mkdirSync(dirname)
+  }
+
+
+  for (const lib of libs) {
+    const testFileName = path.join(
+      outdir,
+      `${baseName}.${lib}.${extname}`
+    )
+    console.log('testFileName', libCodes)
+    const code = libCodes[lib]
+    await writeFile(testFileName, code)
+  }
+
 }

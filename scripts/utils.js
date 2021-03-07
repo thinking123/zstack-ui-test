@@ -40,6 +40,20 @@ export function readFile(filename) {
   })
 }
 
+export function writeFile(filename, data) {
+  return new Promise((res, rej) => {
+    return fs.writeFile(filename, data, (err, data) => {
+      if (err) {
+        rej(err)
+      } else {
+        res(data)
+      }
+
+    })
+  })
+}
+
+
 export function resolvePlugin(plugin) {
   const module = require(path.resolve(plugin))
 
@@ -52,13 +66,15 @@ export async function compile(src, opts) {
   const source = await readFile(src)
 
 
-
+  let res = ''
   for (const plugin of plugins) {
 
     const fn = resolvePlugin(plugin)
 
-    const res = fn(source, opts, src)
-    // console.log('source', res)
+    res = fn(res ? res : source, opts, src)
 
   }
+
+
+  return res
 }

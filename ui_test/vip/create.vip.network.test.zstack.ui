@@ -1,0 +1,8 @@
+navigate [network-service/vip/create]
+name:input [input]
+description:input [textarea]
+l3NetworkType:select [0]
+l3Network:select [0]
+ipRange:select [0]
+requiredIp:input [192.168.0.1]
+submit

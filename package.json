@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node scripts/start.js -l playwright -k chromium"
+    "start": "babel-node scripts/start.js ./ui_test -l playwright -k chromium",
+    "build": "babel scripts/start.js -d dist -s -l playwright -k chromium",
+    "p": "node dist/create.vip.network.test.zstack.playwright.test",
+    "l": "node dist/login.test.zstack.playwright.test.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +16,7 @@
     "webpack": "^4.43.0"
   },
   "dependencies": {
+    "@babel/cli": "^7.13.0",
     "@babel/core": "^7.13.8",
     "@babel/node": "^7.13.0",
     "@babel/preset-env": "^7.13.9",
@@ -22,6 +26,7 @@
     "gensync": "^1.0.0-beta.2",
     "glob": "^7.1.6",
     "lodash": "^4.17.21",
-    "make-dir": "^3.1.0"
+    "make-dir": "^3.1.0",
+    "playwright": "^1.9.1"
   }
 }
