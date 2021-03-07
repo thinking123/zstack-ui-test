@@ -1,0 +1,40 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn add commander
+
+PATH: 
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  12.18.2
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: ENOENT: no such file or directory, copyfile '/usr/local/share/Library/Caches/Yarn/v6/npm-is-extendable-1.0.1-a7470f9e426733d81bd81e1155264e3a3507cab4-integrity/node_modules/is-extendable/LICENSE' -> '/Users/waibao/gulpDir/test/node_modules/split-string/node_modules/is-extendable/LICENSE'
+
+npm manifest: 
+  {
+    "name": "test",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+      "webpack": "^4.43.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
