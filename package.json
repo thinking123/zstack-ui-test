@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel-node scripts/start.js ./ui_test -l playwright -k chromium",
+    "prebuild": "tsc ",
+    "build": "node lib/start.js -c ./zstack.ui.test.config.json",
+    "build2": "babel-node scripts/start.js ./ui_test -l playwright -k chromium",
     "build1": "babel scripts/start.js -d dist -s -l playwright -k chromium",
     "vip": "node dist/create.vip.network.test.zstack.playwright.test",
     "l": "node dist/login.test.zstack.playwright.test.js",

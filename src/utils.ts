@@ -52,13 +52,13 @@ export function readFile(filename): Promise<string> {
   })
 }
 
-export function writeFile(filename, data) {
+export function writeFile(filename: string, data: string) {
   return new Promise((res, rej) => {
     return fs.writeFile(filename, data, (err) => {
       if (err) {
         rej(err)
       } else {
-        res()
+        res('')
       }
 
     })
