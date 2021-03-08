@@ -1,5 +1,8 @@
 {
-  "lib": ["playwright"],
-  "kernal": ["chromium"],
-  "plugins": ["./scripts/zstackuitest.plugin"]
+  "libs": ["playwright"],
+  "kernals": ["chromium"],
+  "plugins": ["./lib/plugins/zstackuitest.plugin"],
+  "baseUrl": "http://localhost:7000",
+  "include": "./ui_test",
+  "outdir": "./dist"
 }

@@ -7,12 +7,14 @@
     "build": "babel-node scripts/start.js ./ui_test -l playwright -k chromium",
     "build1": "babel scripts/start.js -d dist -s -l playwright -k chromium",
     "vip": "node dist/create.vip.network.test.zstack.playwright.test",
-    "l": "node dist/login.test.zstack.playwright.test.js"
+    "l": "node dist/login.test.zstack.playwright.test.js",
+    "build-t": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "typescript": "^4.2.3",
     "webpack": "^4.43.0"
   },
   "dependencies": {
