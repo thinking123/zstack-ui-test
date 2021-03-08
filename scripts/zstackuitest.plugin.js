@@ -74,7 +74,7 @@ function transformPlaywright(directives, options) {
           sts.push(t)
           break
         }
-      case 'list-select':
+      case 'list':
         {
           const name = `.${selector}${suffixClassName}`
           const t = `
@@ -130,7 +130,7 @@ function transformPlaywright(directives, options) {
   return res
 }
 function parse(statement) {
-  const keys = /(navigate|input|select|click|list-select|textarea|submit|wait)\s*/
+  const keys = /(navigate|input|select|click|list|textarea|submit|wait)\s*/
   const selector = /\w+(?=:)/
   const params = /\[([\.\d\w\/-]+)\]/
 

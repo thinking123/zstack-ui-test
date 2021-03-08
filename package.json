@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node scripts/start.js ./ui_test -l playwright -k chromium",
-    "build": "babel scripts/start.js -d dist -s -l playwright -k chromium",
-    "p": "node dist/create.vip.network.test.zstack.playwright.test",
+    "build": "babel-node scripts/start.js ./ui_test -l playwright -k chromium",
+    "build1": "babel scripts/start.js -d dist -s -l playwright -k chromium",
+    "vip": "node dist/create.vip.network.test.zstack.playwright.test",
     "l": "node dist/login.test.zstack.playwright.test.js"
   },
   "keywords": [],
