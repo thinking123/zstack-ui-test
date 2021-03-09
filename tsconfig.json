@@ -4,7 +4,8 @@
     "allowJs": true,
     "target": "es5",
     "esModuleInterop": true,
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "sourceMap": true
   },
   "include": [
     "./src/**/*"
